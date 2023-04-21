@@ -1,7 +1,5 @@
 const fetch = require('node-fetch');
-
-
-//const request = require('request');
+const { Configuration, OpenAIApi } = require("openai");
 
 // 机器人接口的API，此处使用的青云客机器人，也可以使用其他的API
 const URL = "http://api.qingyunke.com/api.php?key=free&appid=0&msg=";
@@ -14,18 +12,33 @@ module.exports = payload => {
    * 他的接口或多或少都要收费，这个算良心了。
    */
 
-    return fetch(`${URL}${encodeURI(payload.msg)}`)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(
-          `unexpected HTTP error createConversation ${res.status}: ${res.statusText}`
-        )
-      }
-      return res.json()
-    })
-    .then ( json => {
-      console.log(json)
-      const result = json.content.replaceAll('{br}', '\n');
-      return result;
-    })
+
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  const openai = new OpenAIApi(configuration);
+
+  return openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: payload.msg,
+    max_tokens: 512,
+    stop: ["{}"]
+  })
+  .then(completion => {console.log(completion.data.choices[0].text)})
+  .catch(err => console.log(`error: ${err.message}`))
+
+  // return fetch(`${URL}${encodeURI(payload.msg)}`)
+  //   .then(res => {
+  //     if (!res.ok) {
+  //       throw new Error(
+  //         `unexpected HTTP error createConversation ${res.status}: ${res.statusText}`
+  //       )
+  //     }
+  //     return res.json()
+  //   })
+  //   .then(json => {
+  //     console.log(json)
+  //     const result = json.content.replaceAll('{br}', '\n');
+  //     return result;
+  //   })
 }
