@@ -63,7 +63,7 @@ module.exports = () => {
         options.msg = answer;
       } else if (MsgType === 'event') {
         if (message.Event === 'subscribe') {
-            if(message.FromUserName==='oXF5WwSMwQ4vvby9Rhf3liKlQwTc'){
+            if(message.ToUserName==='gh_fe6a39d7cba7'){
                 options.msg = `欢迎关注 leon 的公众号 ，作者不定时写个文章。本公众号于2023.04.20接入青云客机器人接口，发送消息有惊喜`;
             }else{
                 options.msg = `欢迎关注 Ernest 的公众号 ，作者不定时写个文章。本公众号于2023.04.20接入青云客机器人接口，发送消息有惊喜`;

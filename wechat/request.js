@@ -33,7 +33,7 @@ module.exports = (payload) => {
         throw new Error(
           `unexpected HTTP error createConversation ${res.status}: ${res.statusText}`
         );
-      }
+      } 
       return res.json();
     })
     .then((json) => {
